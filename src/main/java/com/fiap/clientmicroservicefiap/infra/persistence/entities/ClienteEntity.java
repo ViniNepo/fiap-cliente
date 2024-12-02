@@ -1,4 +1,4 @@
-package com.postech.infra.persistence.entities;
+package com.fiap.clientmicroservicefiap.infra.persistence.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -13,7 +13,7 @@ spring:
     password: ${DB_PASSWORD:postgres}
     driver-class-name: ${DB_DRIVER:org.postgresql.Driver}
     hikari:
-      connectionTimeout: 60000 #Tempo que a aplicação vai esperar até que o banco esteja dispponível
+      connectionTimeout: 60000
       initializationFailTimeout: -1
   jpa:
     hibernate:

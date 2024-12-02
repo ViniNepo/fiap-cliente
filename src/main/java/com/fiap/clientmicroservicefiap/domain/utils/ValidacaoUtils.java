@@ -1,14 +1,8 @@
-package com.postech.domain.utils;
+package com.fiap.clientmicroservicefiap.domain.utils;
 
-import com.postech.domain.exceptions.DominioException;
+import com.fiap.clientmicroservicefiap.domain.exceptions.DominioException;
 
 public class ValidacaoUtils {
-
-    public static void validaValorPositivo(Double valor, String mensagem) {
-        if (valor < 0.0) {
-            throw new DominioException(mensagem);
-        }
-    }
 
     /**
      * Validação de string se está vazia
@@ -22,18 +16,4 @@ public class ValidacaoUtils {
             throw new DominioException(mensagem);
         }
     }
-
-    /**
-     * Valida se objeto é nulo
-     *
-     * @param objeto
-     * @param mensagem
-     * @throws DominioException
-     */
-    public static void validaArgumentoNaoNulo(Object objeto, String mensagem) throws DominioException {
-        if (objeto == null) {
-            throw new DominioException(mensagem);
-        }
-    }
-
 }

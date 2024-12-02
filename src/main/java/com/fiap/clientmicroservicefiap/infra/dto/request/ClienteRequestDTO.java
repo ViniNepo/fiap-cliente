@@ -1,4 +1,4 @@
-package com.postech.infra.dto.request;
+package com.fiap.clientmicroservicefiap.infra.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 

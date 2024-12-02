@@ -1,27 +1,18 @@
-package com.postech.application.usecases;
+package com.fiap.clientmicroservicefiap.application.usecases;
 
-import com.postech.application.gateways.RepositorioDeClienteGateway;
-import com.postech.domain.exceptions.ClienteException;
-import com.postech.domain.entities.Cliente;
-import com.postech.domain.enums.ErroClienteEnum;
+import com.fiap.clientmicroservicefiap.application.gateways.RepositorioDeClienteGateway;
+import com.fiap.clientmicroservicefiap.domain.entities.Cliente;
+import com.fiap.clientmicroservicefiap.domain.enums.ErroClienteEnum;
+import com.fiap.clientmicroservicefiap.domain.exceptions.ClienteException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class ClienteUseCases {
 
     private final RepositorioDeClienteGateway repositorio;
 
+    @Autowired
     public ClienteUseCases(RepositorioDeClienteGateway repositorio) {
         this.repositorio = repositorio;
-    }
-
-    public Cliente buscarPorId(Long id) {
-
-        Cliente cliente = repositorio.buscarPorId(id);
-
-        if (cliente == null) {
-            throw new ClienteException(ErroClienteEnum.CLIENTE_ID_NAO_ENCONTRADO);
-        }
-
-        return cliente;
     }
 
     public Cliente buscarPorCPF(String cpf) {

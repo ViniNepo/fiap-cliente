@@ -1,7 +1,7 @@
-package com.postech.domain.entities;
+package com.fiap.clientmicroservicefiap.domain.entities;
 
-import com.postech.domain.exceptions.DominioException;
-import com.postech.domain.utils.ValidacaoUtils;
+import com.fiap.clientmicroservicefiap.domain.exceptions.DominioException;
+import com.fiap.clientmicroservicefiap.domain.utils.ValidacaoUtils;
 
 import java.util.Optional;
 

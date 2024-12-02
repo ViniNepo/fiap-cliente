@@ -1,8 +1,8 @@
-package com.postech.infra.resource;
+package com.fiap.clientmicroservicefiap.infra.resource;
 
-import com.postech.domain.entities.Cliente;
-import com.postech.infra.dto.request.ClienteRequestDTO;
-import com.postech.infra.dto.ErroDTO;
+import com.fiap.clientmicroservicefiap.domain.entities.Cliente;
+import com.fiap.clientmicroservicefiap.infra.dto.ErroDTO;
+import com.fiap.clientmicroservicefiap.infra.dto.request.ClienteRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -1,13 +1,11 @@
 package com.fiap.clientmicroservicefiap.infra.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 import com.fiap.clientmicroservicefiap.application.usecases.ClienteUseCases;
 import com.fiap.clientmicroservicefiap.domain.entities.CPF;
 import com.fiap.clientmicroservicefiap.domain.entities.Cliente;
-import com.fiap.clientmicroservicefiap.domain.exceptions.DominioException;
 import com.fiap.clientmicroservicefiap.infra.dto.request.ClienteRequestDTO;
 import com.fiap.clientmicroservicefiap.infra.dto.request.CpfRequestDTO;
 import com.fiap.clientmicroservicefiap.infra.dto.response.ClienteResponseDTO;

@@ -1,9 +1,9 @@
-package com.postech.infra.mappers;
+package com.fiap.clientmicroservicefiap.infra.mappers;
 
-import com.postech.domain.entities.Cliente;
-import com.postech.infra.dto.request.ClienteRequestDTO;
-import com.postech.infra.dto.response.ClienteResponseDTO;
-import com.postech.infra.persistence.entities.ClienteEntity;
+import com.fiap.clientmicroservicefiap.domain.entities.Cliente;
+import com.fiap.clientmicroservicefiap.infra.dto.request.ClienteRequestDTO;
+import com.fiap.clientmicroservicefiap.infra.dto.response.ClienteResponseDTO;
+import com.fiap.clientmicroservicefiap.infra.persistence.entities.ClienteEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -16,6 +16,7 @@ public interface ClienteMapper {
     @Mapping(target = "cpf.numero", source = "clienteEntity.cpf")
     Cliente paraDominio(ClienteEntity clienteEntity);
 
+    @Mapping(target = "cpf.numero", source = "clienteRequestDTO.cpf.numero")
     Cliente paraDominio(ClienteRequestDTO clienteRequestDTO);
 
     @Mapping(target = "cpf", source = "cliente.cpf.numero")

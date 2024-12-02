@@ -1,6 +1,6 @@
-package com.postech.domain.exceptions;
+package com.fiap.clientmicroservicefiap.domain.exceptions;
 
-import com.postech.domain.enums.ErroClienteEnum;
+import com.fiap.clientmicroservicefiap.domain.enums.ErroClienteEnum;
 
 public class ClienteException extends RuntimeException {
 

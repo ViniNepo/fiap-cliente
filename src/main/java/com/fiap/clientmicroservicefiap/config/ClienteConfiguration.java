@@ -1,10 +1,10 @@
-package com.postech.config;
+package com.fiap.clientmicroservicefiap.config;
 
-import com.postech.application.gateways.RepositorioDeClienteGateway;
-import com.postech.application.usecases.ClienteUseCases;
-import com.postech.infra.gateways.RepositorioDeClienteGatewayImpl;
-import com.postech.infra.mappers.ClienteMapper;
-import com.postech.infra.persistence.repositories.ClienteRepository;
+import com.fiap.clientmicroservicefiap.application.gateways.RepositorioDeClienteGateway;
+import com.fiap.clientmicroservicefiap.application.usecases.ClienteUseCases;
+import com.fiap.clientmicroservicefiap.infra.gateways.RepositorioDeClienteGatewayImpl;
+import com.fiap.clientmicroservicefiap.infra.mappers.ClienteMapper;
+import com.fiap.clientmicroservicefiap.infra.persistence.repositories.ClienteRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
