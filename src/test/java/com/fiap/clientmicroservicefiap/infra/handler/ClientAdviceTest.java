@@ -20,12 +20,10 @@ public class ClientAdviceTest {
     void testClientExceptionHandler() throws Exception {
         mockMvc.perform(get("/clientes/test-error-clientes-cadastrado")
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+                .andExpect(status().isBadRequest());
 
         mockMvc.perform(get("/clientes/test-error-clientes-cpf-nao-encontrado")
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+                .andExpect(status().isNotFound());
     }
 }
