@@ -1,7 +1,7 @@
-package com.postech.infra.handler;
+package com.fiap.clientmicroservicefiap.infra.handler;
 
-import com.postech.infra.dto.ErroDTO;
-import com.postech.domain.exceptions.ClienteException;
+import com.fiap.clientmicroservicefiap.domain.exceptions.ClienteException;
+import com.fiap.clientmicroservicefiap.infra.dto.ErroDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

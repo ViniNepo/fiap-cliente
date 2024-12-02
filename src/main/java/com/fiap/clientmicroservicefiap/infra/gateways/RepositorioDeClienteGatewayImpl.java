@@ -1,10 +1,10 @@
-package com.postech.infra.gateways;
+package com.fiap.clientmicroservicefiap.infra.gateways;
 
-import com.postech.application.gateways.RepositorioDeClienteGateway;
-import com.postech.domain.entities.Cliente;
-import com.postech.infra.mappers.ClienteMapper;
-import com.postech.infra.persistence.entities.ClienteEntity;
-import com.postech.infra.persistence.repositories.ClienteRepository;
+import com.fiap.clientmicroservicefiap.application.gateways.RepositorioDeClienteGateway;
+import com.fiap.clientmicroservicefiap.domain.entities.Cliente;
+import com.fiap.clientmicroservicefiap.infra.mappers.ClienteMapper;
+import com.fiap.clientmicroservicefiap.infra.persistence.entities.ClienteEntity;
+import com.fiap.clientmicroservicefiap.infra.persistence.repositories.ClienteRepository;
 
 import java.util.Optional;
 
@@ -22,12 +22,6 @@ public class RepositorioDeClienteGatewayImpl implements RepositorioDeClienteGate
     public Cliente cadastrarCliente(Cliente cliente) {
         ClienteEntity entity = mapper.paraEntidade(cliente);
         return mapper.paraDominio(clienteRepository.save(entity));
-    }
-
-    @Override
-    public Cliente buscarPorId(Long id) {
-        Optional<ClienteEntity> entity = clienteRepository.getClienteEntityById(id);
-        return entity.map(mapper::paraDominio).orElse(null);
     }
 
     @Override

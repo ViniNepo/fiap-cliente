@@ -1,10 +1,11 @@
-package com.postech.infra.controller;
+package com.fiap.clientmicroservicefiap.infra.controller;
 
-import com.postech.application.usecases.ClienteUseCases;
-import com.postech.domain.entities.Cliente;
-import com.postech.infra.dto.request.ClienteRequestDTO;
-import com.postech.infra.mappers.ClienteMapper;
-import com.postech.infra.resource.ClienteResource;
+import com.fiap.clientmicroservicefiap.application.usecases.ClienteUseCases;
+import com.fiap.clientmicroservicefiap.domain.entities.Cliente;
+import com.fiap.clientmicroservicefiap.infra.dto.request.ClienteRequestDTO;
+import com.fiap.clientmicroservicefiap.infra.mappers.ClienteMapper;
+import com.fiap.clientmicroservicefiap.infra.resource.ClienteResource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ public class ClienteController implements ClienteResource {
     private final ClienteUseCases useCases;
     private final ClienteMapper mapper;
 
+    @Autowired
     public ClienteController(ClienteUseCases useCases, ClienteMapper mapper) {
         this.useCases = useCases;
         this.mapper = mapper;

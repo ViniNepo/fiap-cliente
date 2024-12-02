@@ -1,15 +1,9 @@
-package com.postech.domain.exceptions;
+package com.fiap.clientmicroservicefiap.domain.exceptions;
 
 public class DominioException extends RuntimeException {
-
-    public DominioException() {
-    }
 
     public DominioException(String mensagem) {
         super(mensagem);
     }
 
-    public DominioException(String mensagem, Throwable causa) {
-        super(mensagem, causa);
-    }
 }
