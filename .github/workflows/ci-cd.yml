@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Build, Test, and Deploy
 
 on:
   pull_request:
@@ -11,64 +11,91 @@ on:
       - master
 
 jobs:
-  test:
+  build-test:
+    name: Build and Test
     runs-on: ubuntu-latest
+
     steps:
-      - name: Check out code
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: temurin
+          java-version: 17
 
-      - name: Cache Maven packages
+      - name: Cache Maven dependencies
         uses: actions/cache@v3
         with:
           path: ~/.m2
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
-            ${{ runner.os }}-maven
+            ${{ runner.os }}-maven-
 
-      - name: Build and test
-        run: mvn clean verify
+      - name: Install dependencies
+        run: mvn install -DskipTests
 
-      - name: Upload coverage report
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: coverage-report
-          path: target/site/jacoco/index.html
+      - name: Run tests
+        run: mvn test
+
+      - name: Generate coverage report
+        run: mvn jacoco:report
 
       - name: Enforce test coverage
         run: |
-          COVERAGE=$(grep -Po '(?<=<counter type="LINE" missed=")[^"]*(?=" covered="[0-9]+")' target/site/jacoco/jacoco.xml)
-          if [ "$COVERAGE" -lt 80 ]; then
-            echo "Test coverage is below 80%! Current: $COVERAGE%"
+          # Extrair dados do Jacoco e verificar cobertura mínima
+          COVERED=$(xmllint --xpath "string(//counter[@type='LINE']/@covered)" target/site/jacoco/jacoco.xml)
+          MISSED=$(xmllint --xpath "string(//counter[@type='LINE']/@missed)" target/site/jacoco/jacoco.xml)
+          
+          if [[ -z "$COVERED" || -z "$MISSED" || ! "$COVERED" =~ ^[0-9]+$ || ! "$MISSED" =~ ^[0-9]+$ ]]; then
+            echo "Error: Could not extract valid coverage data."
             exit 1
+          fi
+          
+          TOTAL=$((COVERED + MISSED))
+          COVERAGE_PERCENT=$((COVERED * 100 / TOTAL))
+          
+          if [ "$COVERAGE_PERCENT" -lt 80 ]; then
+            echo "Test coverage is below 80%! Current: $COVERAGE_PERCENT%"
+            exit 1
+          else
+            echo "Test coverage is sufficient: $COVERAGE_PERCENT%"
+          fi
 
-  build-and-deploy:
-    needs: test
+  deploy:
+    name: Deploy to AWS ECS
+    needs: build-test
     runs-on: ubuntu-latest
+
     steps:
-      - name: Check out code
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Log in to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1 # Substitua pela sua região AWS
 
-      - name: Build, tag, and push Docker image
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push Docker image
         run: |
-          IMAGE_TAG=${{ github.sha }}
-          docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECS_REPOSITORY_NAME }}:${IMAGE_TAG} .
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECS_REPOSITORY_NAME }}:${IMAGE_TAG}
+          IMAGE_NAME=my-app
+          ECR_REPOSITORY=${{ secrets.ECR_REPOSITORY }}
+          docker build -t $ECR_REPOSITORY:$GITHUB_SHA .
+          docker tag $ECR_REPOSITORY:$GITHUB_SHA $ECR_REPOSITORY:latest
+          docker push $ECR_REPOSITORY:$GITHUB_SHA
+          docker push $ECR_REPOSITORY:latest
 
       - name: Deploy to Amazon ECS
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
-          task-definition: ecs-task-definition.json
-          service: ${{ secrets.ECS_SERVICE_NAME }}
-          cluster: ${{ secrets.ECS_CLUSTER_NAME }}
+          cluster: my-ecs-cluster # Substitua pelo nome do seu cluster ECS
+          service: my-service # Substitua pelo nome do seu serviço ECS
+          task-definition: task-def.json # Arquivo JSON do Task Definition
           wait-for-service-stability: true
