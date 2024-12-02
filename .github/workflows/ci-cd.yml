@@ -97,5 +97,5 @@ jobs:
         with:
           cluster: my-ecs-cluster # Substitua pelo nome do seu cluster ECS
           service: my-service # Substitua pelo nome do seu serviço ECS
-          task-definition: task-def.json # Arquivo JSON do Task Definition
+          task-definition: task-def.json 
           wait-for-service-stability: true
