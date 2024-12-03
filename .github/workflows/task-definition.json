@@ -1,0 +1,70 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:us-east-1:851725213341:task-definition/cliente-fiap:5",
+    "containerDefinitions": [
+        {
+            "name": "cliente-fiap",
+            "image": "vininepo/clientefiap:latest",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "cliente-fiap-8080-tcp",
+                    "containerPort": 8080,
+                    "hostPort": 8080,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "DB_URL",
+                    "value": "jdbc:postgresql://fiap.clwmk0ue6fx7.us-east-1.rds.amazonaws.com:5432/postgres"
+                },
+                {
+                    "name": "DB_USER",
+                    "value": "postgresql"
+                },
+                {
+                    "name": "DB_PASSWORD",
+                    "value": "clientefiap"
+                }
+            ],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "ulimits": [],
+            "systemControls": []
+        }
+    ],
+    "family": "cliente-fiap",
+    "executionRoleArn": "arn:aws:iam::851725213341:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "revision": 5,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "FARGATE"
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "512",
+    "memory": "1024",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2024-12-03T00:54:34.628Z",
+    "registeredBy": "arn:aws:iam::851725213341:root",
+    "tags": []
+}
