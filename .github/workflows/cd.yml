@@ -11,7 +11,7 @@ env:
   ECR_REPOSITORY: vininepo/cliente-fiap
   ECS_SERVICE: cliente-fiap
   ECS_CLUSTER: cliente-fiap
-  ECS_TASK_DEFINITION: .github/workflows/task-definition.json
+  ECS_TASK_DEFINITION: .cliente-fiap
   CONTAINER_NAME: cliente-fiap
 
 permissions:
