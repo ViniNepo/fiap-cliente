@@ -1,0 +1,43 @@
+name: Build e Teste
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+
+      - name: Build project and run tests
+        run: mvn clean verify
+
+      - name: Check test coverage
+        run: |
+          COVERAGE=$(xmllint --xpath 'string(//counter[@type="LINE"]/@covered)' target/site/jacoco/jacoco.xml)
+          MISSED=$(xmllint --xpath 'string(//counter[@type="LINE"]/@missed)' target/site/jacoco/jacoco.xml)
+          TOTAL=$((COVERAGE + MISSED))
+          PERCENTAGE=$((COVERAGE * 100 / TOTAL))
+          echo "Test coverage: $PERCENTAGE%"
+          if [ "$PERCENTAGE" -lt 80 ]; then
+            echo "Test coverage is below 80%! Current: $PERCENTAGE%"
+            exit 1
+          fi
