@@ -1,4 +1,4 @@
-name: deploy
+name: Build e Teste
 
 on:
   pull_request:
