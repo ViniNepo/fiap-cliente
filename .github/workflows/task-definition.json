@@ -28,7 +28,7 @@
                     "name": "DB_PASSWORD",
                     "value": "{{DB_PASSWORD}}"
                 }
-            ]
+            ],
             "environmentFiles": [],
             "mountPoints": [],
             "volumesFrom": [],
