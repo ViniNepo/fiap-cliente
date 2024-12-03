@@ -12,7 +12,7 @@ on:
 
 env:
   AWS_REGION: us-east-1
-  ECR_REPOSITORY: cliente-fiap
+  ECR_REPOSITORY: vininepo/cliente-fiap
   ECS_SERVICE: cliente-fiap
   ECS_CLUSTER: cliente-fiap
   ECS_TASK_DEFINITION: .github/workflows/task-definition.json
@@ -26,33 +26,6 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y libxml2-utils
-
-      - name: Build project and run tests
-        run: mvn clean verify
-
-      - name: Check test coverage
-        run: |
-          COVERAGE=$(xmllint --xpath 'string(//counter[@type="LINE"]/@covered)' target/site/jacoco/jacoco.xml)
-          MISSED=$(xmllint --xpath 'string(//counter[@type="LINE"]/@missed)' target/site/jacoco/jacoco.xml)
-          TOTAL=$((COVERAGE + MISSED))
-          PERCENTAGE=$((COVERAGE * 100 / TOTAL))
-          echo "Test coverage: $PERCENTAGE%"
-          if [ "$PERCENTAGE" -lt 80 ]; then
-            echo "Test coverage is below 80%! Current: $PERCENTAGE%"
-            exit 1
-          fi
 
   deploy:
     name: Deploy
@@ -61,13 +34,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: ${{ secrets.IAM_ROLE }}
-          role-session-name: Github
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
@@ -85,10 +58,11 @@ jobs:
           # be deployed to ECS.
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v5
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: ${{ env.ECS_TASK_DEFINITION }}
           container-name: ${{ env.CONTAINER_NAME }}

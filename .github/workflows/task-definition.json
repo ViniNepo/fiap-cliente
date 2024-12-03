@@ -1,15 +1,15 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-1:851725213341:task-definition/cliente-fiap:5",
+    "taskDefinitionArn": "arn:aws:ecs:us-east-1:851725213341:task-definition/cliente-fiap:13",
     "containerDefinitions": [
         {
             "name": "cliente-fiap",
-            "image": "vininepo/clientefiap:latest",
+            "image": "851725213341.dkr.ecr.us-east-1.amazonaws.com/vininepo/cliente-fiap:latest",
             "cpu": 0,
             "portMappings": [
                 {
-                    "name": "cliente-fiap-8080-tcp",
-                    "containerPort": 8080,
-                    "hostPort": 8080,
+                    "name": "cliente-fiap-8081-tcp",
+                    "containerPort": 8081,
+                    "hostPort": 8081,
                     "protocol": "tcp",
                     "appProtocol": "http"
                 }
@@ -22,7 +22,7 @@
                 },
                 {
                     "name": "DB_USER",
-                    "value": "postgresql"
+                    "value": "postgres"
                 },
                 {
                     "name": "DB_PASSWORD",
@@ -37,12 +37,22 @@
         }
     ],
     "family": "cliente-fiap",
-    "executionRoleArn": "arn:aws:iam::851725213341:role/ecsTaskExecutionRole",
+    "taskRoleArn": "arn:aws:iam::851725213341:role/Git",
+    "executionRoleArn": "arn:aws:iam::851725213341:role/Git",
     "networkMode": "awsvpc",
-    "revision": 5,
+    "revision": 13,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
         {
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
         },
@@ -64,7 +74,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2024-12-03T00:54:34.628Z",
+    "registeredAt": "2024-12-03T13:59:45.585Z",
     "registeredBy": "arn:aws:iam::851725213341:root",
     "tags": []
 }
