@@ -17,7 +17,6 @@ env:
   ECS_CLUSTER: cliente-fiap
   ECS_TASK_DEFINITION: .github/workflows/task-definition.json
   CONTAINER_NAME: cliente-fiap
-  AWS_ROLE: ${{ secrets.IAM_ROLE }}
 
 permissions:
   id-token: write
@@ -66,7 +65,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume:
+          role-to-assume: ${{ secrets.IAM_ROLE }}
           role-session-name: Github
           aws-region: ${{ env.AWS_REGION }}
 
