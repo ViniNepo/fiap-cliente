@@ -1,10 +1,17 @@
-FROM openjdk:17-jdk-slim
+FROM maven:3.9.6-eclipse-temurin-17-alpine AS builder
 
-# Define o diretório de trabalho
 WORKDIR /app
 
-# Copia o arquivo JAR do diretório target para a imagem
-COPY . .
+COPY pom.xml .
+COPY src src
 
-# Comando para rodar a aplicação
-CMD ["java", "-jar", "/app/my-app.jar"]
+RUN mvn package -DskipTests
+
+FROM openjdk:17-jdk-alpine
+
+WORKDIR /app
+
+ARG JAR_FILE=/app/target/*.jar
+COPY --from=builder ${JAR_FILE} application.jar
+
+CMD ["java", "-jar", "application.jar"]
